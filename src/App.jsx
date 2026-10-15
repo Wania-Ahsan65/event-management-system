@@ -1,30 +1,28 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import EventDetails from './pages/EventDetails';
-import MyEvents from './pages/MyEvents';
+import { Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import EventsPage from './pages/EventsPage'
+import EventDetailsPage from './pages/EventDetailsPage'
+import MyEventsPage from './pages/MyEventsPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
   return (
-    <BrowserRouter>
-      <nav>
-        <Link to="/">Home</Link>{' '}
-        <Link to="/login">Login</Link>{' '}
-        <Link to="/register">Register</Link>{' '}
-        <Link to="/events/1">Event Details</Link>{' '}
-        <Link to="/my-events">My Events</Link>
-      </nav>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/events/:id" element={<EventDetails />} />
-        <Route path="/my-events" element={<MyEvents />} />
-      </Routes>
-    </BrowserRouter>
-  );
+    <>
+      <Navbar />
+      <main className="container">
+        <Routes>
+          <Route path="/" element={<EventsPage />} />
+          <Route path="/events/:id" element={<EventDetailsPage />} />
+          <Route path="/my-events" element={<MyEventsPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+    </>
+  )
 }
 
-export default App;
+export default App
