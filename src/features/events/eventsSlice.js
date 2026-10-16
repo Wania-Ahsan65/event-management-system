@@ -42,6 +42,7 @@ const eventsSlice = createSlice({
         state.page = action.payload.page
       })
       .addCase(fetchEvents.rejected, (state, action) => {
+        if (action.meta.aborted) return // cancelled on purpose, not a real error
         state.status = 'failed'
         state.error = action.payload || 'Something went wrong.'
       })
