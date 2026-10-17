@@ -67,10 +67,17 @@ export async function getEventById(id) {
   return mapEvent(data)
 }
 
+const DEFAULT_CATEGORIES = ['Music', 'Sports', 'Arts & Theatre', 'Film', 'Miscellaneous']
+
 export async function getCategories() {
-  const data = await request('/classifications.json', { size: 20 })
-  const names = (data._embedded?.classifications || [])
-    .map((c) => c.segment?.name)
-    .filter(Boolean)
-  return [...new Set(names)]
+  try {
+    const data = await request('/classifications.json', { size: 20 })
+    const names = (data._embedded?.classifications || [])
+      .map((c) => c.segment?.name)
+      .filter((n) => n && n !== 'Undefined')
+    const unique = [...new Set(names)]
+    return unique.length > 0 ? unique : DEFAULT_CATEGORIES
+  } catch {
+    return DEFAULT_CATEGORIES // rate-limited or offline: chips still work
+  }
 }
