@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import Toast from './components/Toast'
 import ProtectedRoute from './components/ProtectedRoute'
 import GuestRoute from './components/GuestRoute'
 import LoginPage from './pages/LoginPage'
@@ -13,6 +14,7 @@ function App() {
   return (
     <>
       <Navbar />
+      <Toast />
       <main className="container">
         <Routes>
           <Route path="/" element={<EventsPage />} />
