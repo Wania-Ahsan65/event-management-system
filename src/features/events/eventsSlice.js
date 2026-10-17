@@ -1,6 +1,5 @@
-import { searchEvents, getCategories, getEventById } from '../../services/ticketmaster'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { searchEvents, getCategories } from '../../services/ticketmaster'
+import { searchEvents, getCategories, getEventById } from '../../services/ticketmaster'
 
 export const fetchEvents = createAsyncThunk(
   'events/fetchEvents',
