@@ -12,3 +12,11 @@ export function formatTime(localTime) {
   d.setHours(Number(h), Number(m))
   return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
 }
+
+// true if the event date is today or later (events with no date count as upcoming)
+export function isUpcoming(localDate) {
+  if (!localDate) return true
+  const today = new Date()
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+  return localDate >= todayStr
+}

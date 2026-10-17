@@ -1,14 +1,19 @@
 import { useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchEventById } from '../features/events/eventsSlice'
-import { formatDate, formatTime } from '../utils/format'
+import { registerForEvent, cancelRegistration } from '../features/registrations/registrationsSlice'
+import { showToast } from '../features/ui/uiSlice'
+import { formatDate, formatTime, isUpcoming } from '../utils/format'
 import Loader from '../components/Loader'
 import ErrorMessage from '../components/ErrorMessage'
 
 function EventDetailsPage() {
   const { id } = useParams()
   const dispatch = useDispatch()
+  const location = useLocation()
+  const user = useSelector((s) => s.auth.user)
+  const registrations = useSelector((s) => s.registrations.items)
   const { selected: event, selectedStatus: status, selectedError: error } =
     useSelector((s) => s.events)
 
@@ -22,6 +27,25 @@ function EventDetailsPage() {
     return <ErrorMessage message={error} onRetry={() => dispatch(fetchEventById(id))} />
   }
   if (!event) return null
+
+  const isRegistered =
+    !!user && registrations.some((r) => r.userId === user.id && r.eventId === event.id)
+  const upcoming = isUpcoming(event.localDate)
+
+  const handleRegister = () => {
+    if (isRegistered) {
+      dispatch(showToast('You are already registered for this event.', 'info'))
+      return
+    }
+    dispatch(registerForEvent(user.id, event))
+    dispatch(showToast(`You are registered for "${event.name}".`))
+  }
+
+  const handleCancel = () => {
+    if (!window.confirm('Cancel your registration for this event?')) return
+    dispatch(cancelRegistration({ userId: user.id, eventId: event.id }))
+    dispatch(showToast('Registration cancelled.', 'info'))
+  }
 
   const price =
     event.priceMin != null
@@ -80,7 +104,23 @@ function EventDetailsPage() {
         </div>
       )}
 
-      {/* Phase 8 adds the Register button here */}
+      <div className="register-box">
+        {!user && (
+          <Link to="/login" state={{ from: location }} className="btn-primary">
+            Login to register
+          </Link>
+        )}
+        {user && !upcoming && <p className="muted">This event has already taken place.</p>}
+        {user && upcoming && !isRegistered && (
+          <button className="btn-primary" onClick={handleRegister}>Register for this event</button>
+        )}
+        {user && isRegistered && (
+          <>
+            <span className="registered-tag">&#10003; You are registered</span>
+            {upcoming && <button className="btn-danger" onClick={handleCancel}>Cancel registration</button>}
+          </>
+        )}
+      </div>
 
       {event.url && (
         <a className="btn-outline" href={event.url} target="_blank" rel="noreferrer">
