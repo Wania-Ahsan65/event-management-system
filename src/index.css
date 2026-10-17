@@ -512,3 +512,12 @@ body {
     flex-basis: auto;
   }
 }
+
+.nav-count {
+  margin-left: .4rem;
+  background: #4f46e5;
+  color: #fff;
+  font-size: .7rem;
+  padding: .1rem .45rem;
+  border-radius: 999px;
+}
