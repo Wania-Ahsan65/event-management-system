@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation ,useNavigate } from 'react-router-dom'
 import { loginUser, clearAuthError } from '../features/auth/authSlice'
 
 function LoginPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { status, error } = useSelector((state) => state.auth)
-
+  const from = location.state?.from?.pathname || '/'
   const [form, setForm] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
 
@@ -25,7 +26,7 @@ function LoginPage() {
     if (Object.keys(v).length > 0) return
 
     const result = await dispatch(loginUser(form))
-    if (loginUser.fulfilled.match(result)) navigate('/')
+    if (loginUser.fulfilled.match(result)) navigate(from, { replace: true })
   }
 
   return (
