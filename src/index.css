@@ -428,3 +428,85 @@ body {
   font-weight: 600;
   margin-right: 1rem;
 }
+
+/* ---------- Responsive polish ---------- */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.navbar {
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.nav-links {
+  flex-wrap: wrap;
+  gap: .9rem;
+}
+
+.navbar a,
+.user-name,
+.logout-btn {
+  margin-left: 0;
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.btn-primary:disabled,
+.btn-danger:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: .7rem 1rem;
+  }
+
+  .container {
+    padding: .75rem;
+  }
+
+  .auth-form {
+    margin: 1rem 0;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters input {
+    width: 100%;
+  }
+
+  .event-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toast {
+    left: 1rem;
+    right: 1rem;
+    text-align: center;
+  }
+
+  .register-box .btn-primary,
+  .register-box .btn-danger {
+    width: 100%;
+    margin-top: .5rem;
+  }
+
+  .registered-tag {
+    display: block;
+    margin: 0 0 .5rem;
+  }
+}
