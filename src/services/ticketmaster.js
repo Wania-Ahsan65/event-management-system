@@ -14,6 +14,7 @@ async function request(path, params = {}) {
   const res = await fetch(`${BASE_URL}${path}?${query}`)
   if (res.status === 429) throw new Error('Too many requests. Please wait a moment and try again.')
   if (res.status === 401) throw new Error('Invalid API key. Check VITE_TM_API_KEY in .env.')
+  if (res.status === 404) throw new Error('Event not found. It may have been removed.')
   if (!res.ok) throw new Error(`Request failed (${res.status}).`)
   return res.json()
 }
